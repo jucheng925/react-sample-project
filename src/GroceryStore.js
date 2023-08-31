@@ -15,6 +15,7 @@ import React, { useState } from "react";
 function ItemsContainer() {
   const [items, setItems] = useState([{id: 1, name: "Milk", category: "Dairy", price: 2}, {id: 2, name: "Banana", category: "Produce", price: 10}, {id: 3, name: "Vanilla Ice Cream", category: "Dairy", price: 4}, {id: 4, name: "Saffron Truffle Gold-Flecked Ice Cream", category: "Dairy", price: 14}, {id: 5, name: "Spinach", category: "Produce", price: 4}, {id: 6, name: "Pomegranates", category: "Produce", price: 11}])
   const [searchterm, setSearchterm] = useState("")
+  const [cheap, setCheap] = useState(false)
 
   function Item({ name, price, category}) {
     return (
@@ -24,14 +25,17 @@ function ItemsContainer() {
 
   const displayItems = items.filter((item) => item.category.toLowerCase().includes(searchterm.toLowerCase()))
 
+  const filterCheapItems = displayItems.filter((item) => item.price < 5)
+
+
   return (
     <div>
         <label htmlFor="category">Search by Category</label>
         <input type="text" name="category" value={searchterm} onChange={(e)=>setSearchterm(e.target.value)}/>
-        <button>All Items</button>
-        <button>Cheap</button>
+        <button onClick={()=> setCheap(false)}>All Items</button>
+        <button onClick={()=> setCheap(true)}>Cheap</button>
         <h3>Items go here:</h3>
-        {displayItems.map((item) => <Item key={item.id} name={item.name} price={item.price} category={item.category}/>)}
+        {(cheap ? filterCheapItems : displayItems).map((item) => <Item key={item.id} name={item.name} price={item.price} category={item.category}/>)}
         <ul>
         </ul>
     </div>
